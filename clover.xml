@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1444005929">
+  <project timestamp="1444005929">
+    <package name="DominionEnterprises\Util">
+      <file name="/home/chadicus/projects/de/util-array-php/src/Arrays.php">
+        <class name="Arrays" namespace="DominionEnterprises\Util">
+          <metrics methods="14" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="126" coveredstatements="126" elements="140" coveredelements="140"/>
+        </class>
+        <line num="22" type="method" name="get" crap="2" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="37" type="method" name="getIfSet" crap="2" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <line num="52" type="method" name="copyIfKeysExist" crap="4" count="2"/>
+        <line num="54" type="stmt" count="2"/>
+        <line num="55" type="stmt" count="2"/>
+        <line num="56" type="stmt" count="1"/>
+        <line num="57" type="stmt" count="1"/>
+        <line num="59" type="stmt" count="2"/>
+        <line num="60" type="stmt" count="2"/>
+        <line num="61" type="stmt" count="2"/>
+        <line num="62" type="stmt" count="2"/>
+        <line num="63" type="stmt" count="2"/>
+        <line num="75" type="method" name="copyIfSet" crap="4" count="2"/>
+        <line num="77" type="stmt" count="2"/>
+        <line num="78" type="stmt" count="2"/>
+        <line num="79" type="stmt" count="1"/>
+        <line num="80" type="stmt" count="1"/>
+        <line num="82" type="stmt" count="2"/>
+        <line num="83" type="stmt" count="2"/>
+        <line num="84" type="stmt" count="2"/>
+        <line num="85" type="stmt" count="2"/>
+        <line num="86" type="stmt" count="2"/>
+        <line num="97" type="method" name="tryGet" crap="4" count="4"/>
+        <line num="99" type="stmt" count="4"/>
+        <line num="100" type="stmt" count="2"/>
+        <line num="101" type="stmt" count="2"/>
+        <line num="104" type="stmt" count="2"/>
+        <line num="105" type="stmt" count="2"/>
+        <line num="133" type="method" name="project" crap="7" count="5"/>
+        <line num="135" type="stmt" count="5"/>
+        <line num="136" type="stmt" count="1"/>
+        <line num="139" type="stmt" count="4"/>
+        <line num="141" type="stmt" count="4"/>
+        <line num="142" type="stmt" count="4"/>
+        <line num="143" type="stmt" count="1"/>
+        <line num="146" type="stmt" count="3"/>
+        <line num="147" type="stmt" count="3"/>
+        <line num="148" type="stmt" count="3"/>
+        <line num="149" type="stmt" count="1"/>
+        <line num="151" type="stmt" count="3"/>
+        <line num="153" type="stmt" count="2"/>
+        <line num="166" type="method" name="where" crap="6" count="5"/>
+        <line num="168" type="stmt" count="5"/>
+        <line num="169" type="stmt" count="5"/>
+        <line num="170" type="stmt" count="5"/>
+        <line num="171" type="stmt" count="1"/>
+        <line num="174" type="stmt" count="4"/>
+        <line num="175" type="stmt" count="4"/>
+        <line num="176" type="stmt" count="4"/>
+        <line num="178" type="stmt" count="3"/>
+        <line num="180" type="stmt" count="3"/>
+        <line num="181" type="stmt" count="4"/>
+        <line num="183" type="stmt" count="4"/>
+        <line num="211" type="method" name="embedInto" crap="9" count="8"/>
+        <line num="213" type="stmt" count="8"/>
+        <line num="214" type="stmt" count="1"/>
+        <line num="217" type="stmt" count="7"/>
+        <line num="218" type="stmt" count="1"/>
+        <line num="221" type="stmt" count="6"/>
+        <line num="222" type="stmt" count="5"/>
+        <line num="223" type="stmt" count="4"/>
+        <line num="224" type="stmt" count="1"/>
+        <line num="227" type="stmt" count="3"/>
+        <line num="228" type="stmt" count="1"/>
+        <line num="231" type="stmt" count="2"/>
+        <line num="232" type="stmt" count="2"/>
+        <line num="233" type="stmt" count="1"/>
+        <line num="235" type="stmt" count="4"/>
+        <line num="237" type="stmt" count="4"/>
+        <line num="248" type="method" name="fillIfKeysExist" crap="3" count="1"/>
+        <line num="250" type="stmt" count="1"/>
+        <line num="251" type="stmt" count="1"/>
+        <line num="252" type="stmt" count="1"/>
+        <line num="253" type="stmt" count="1"/>
+        <line num="254" type="stmt" count="1"/>
+        <line num="255" type="stmt" count="1"/>
+        <line num="257" type="stmt" count="1"/>
+        <line num="279" type="method" name="extract" crap="13" count="8"/>
+        <line num="281" type="stmt" count="8"/>
+        <line num="282" type="stmt" count="1"/>
+        <line num="285" type="stmt" count="7"/>
+        <line num="286" type="stmt" count="1"/>
+        <line num="289" type="stmt" count="6"/>
+        <line num="290" type="stmt" count="1"/>
+        <line num="293" type="stmt" count="5"/>
+        <line num="294" type="stmt" count="5"/>
+        <line num="295" type="stmt" count="5"/>
+        <line num="296" type="stmt" count="1"/>
+        <line num="299" type="stmt" count="4"/>
+        <line num="300" type="stmt" count="4"/>
+        <line num="301" type="stmt" count="1"/>
+        <line num="302" type="stmt" count="1"/>
+        <line num="303" type="stmt" count="1"/>
+        <line num="306" type="stmt" count="4"/>
+        <line num="307" type="stmt" count="4"/>
+        <line num="308" type="stmt" count="4"/>
+        <line num="309" type="stmt" count="4"/>
+        <line num="312" type="stmt" count="3"/>
+        <line num="313" type="stmt" count="1"/>
+        <line num="316" type="stmt" count="2"/>
+        <line num="317" type="stmt" count="1"/>
+        <line num="318" type="stmt" count="1"/>
+        <line num="319" type="stmt" count="2"/>
+        <line num="321" type="stmt" count="2"/>
+        <line num="333" type="method" name="getFirstSet" crap="3" count="2"/>
+        <line num="335" type="stmt" count="2"/>
+        <line num="336" type="stmt" count="2"/>
+        <line num="337" type="stmt" count="1"/>
+        <line num="339" type="stmt" count="2"/>
+        <line num="341" type="stmt" count="1"/>
+        <line num="360" type="method" name="partition" crap="8" count="12"/>
+        <line num="362" type="stmt" count="12"/>
+        <line num="363" type="stmt" count="3"/>
+        <line num="366" type="stmt" count="9"/>
+        <line num="367" type="stmt" count="1"/>
+        <line num="370" type="stmt" count="8"/>
+        <line num="371" type="stmt" count="8"/>
+        <line num="372" type="stmt" count="8"/>
+        <line num="373" type="stmt" count="8"/>
+        <line num="374" type="stmt" count="8"/>
+        <line num="375" type="stmt" count="8"/>
+        <line num="376" type="stmt" count="7"/>
+        <line num="377" type="stmt" count="7"/>
+        <line num="378" type="stmt" count="7"/>
+        <line num="379" type="stmt" count="7"/>
+        <line num="381" type="stmt" count="8"/>
+        <line num="392" type="method" name="unsetAll" crap="2" count="4"/>
+        <line num="394" type="stmt" count="4"/>
+        <line num="395" type="stmt" count="3"/>
+        <line num="396" type="stmt" count="4"/>
+        <line num="397" type="stmt" count="4"/>
+        <line num="406" type="method" name="nullifyEmptyStrings" crap="4" count="2"/>
+        <line num="408" type="stmt" count="2"/>
+        <line num="409" type="stmt" count="1"/>
+        <line num="410" type="stmt" count="1"/>
+        <line num="411" type="stmt" count="1"/>
+        <line num="412" type="stmt" count="2"/>
+        <line num="413" type="stmt" count="2"/>
+        <metrics loc="414" ncloc="231" classes="1" methods="14" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="126" coveredstatements="126" elements="140" coveredelements="140"/>
+      </file>
+    </package>
+    <metrics files="1" loc="414" ncloc="231" classes="1" methods="14" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="126" coveredstatements="126" elements="140" coveredelements="140"/>
+  </project>
+</coverage>

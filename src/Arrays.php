@@ -11,6 +11,34 @@ namespace DominionEnterprises\Util;
 final class Arrays
 {
     /**
+     * Const for lower cased array keys.
+     *
+     * @const integer
+     */
+    const CASE_LOWER = 1;
+
+    /**
+     * Const for upper cased array keys.
+     *
+     * @const integer
+     */
+    const CASE_UPPER = 2;
+
+    /**
+     * Const for camel caps cased array keys.
+     *
+     * @const integer
+     */
+    const CASE_CAMEL_CAPS = 4;
+
+    /**
+     * Const for underscored cased array keys.
+     *
+     * @const integer
+     */
+    const CASE_UNDERSCORE = 8;
+
+    /**
      * Simply returns an array value if the key exist or null if it does not.
      *
      * @param array $array the array to be searched
@@ -456,5 +484,48 @@ final class Arrays
         }
 
         return $pointer;
+    }
+
+    /**
+     * Changes the case of all keys in an array. Numbered indices are left as is.
+     *
+     * @param array   $input The array to work on.
+     * @param integer $case  The case to which the keys should be set.
+     *
+     * @return array Returns an array with its keys case changed.
+     */
+    public static function changeKeyCase(array $input, $case = self::CASE_LOWER)
+    {
+        if ($case & self::CASE_UNDERSCORE) {
+            $copy = [];
+            foreach ($input as $key => $value) {
+                $copy[preg_replace("/([a-z])([A-Z0-9])/", '$1_$2', $key)] = $value;
+            }
+
+            $input = $copy;
+        }
+
+        if ($case & self::CASE_CAMEL_CAPS) {
+            $copy = [];
+            foreach ($input as $key => $value) {
+                $key = implode(' ', array_filter(preg_split('/[^a-z0-9]/i', $key)));
+                $key = lcfirst(str_replace(' ', '', ucwords(strtolower($key))));
+                $copy[$key] = $value;
+            }
+
+            $input = $copy;
+        }
+
+        unset($copy); //gc
+
+        if ($case & self::CASE_UPPER) {
+            $input = array_change_key_case($input, \CASE_UPPER);
+        }
+
+        if ($case & self::CASE_LOWER) {
+            $input = array_change_key_case($input, \CASE_LOWER);
+        }
+
+        return $input;
     }
 }

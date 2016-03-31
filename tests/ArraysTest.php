@@ -787,4 +787,32 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
         A::nullifyEmptyStrings($array);
         $this->assertSame([], $array);
     }
+
+    /**
+     * Verify basic functionality of getNested.
+     *
+     * @test
+     * @covers ::getNested
+     *
+     * @return void
+     */
+    public function getNested()
+    {
+        $array = ['db' => ['host' => 'localhost', 'login' => [ 'username' => 'scott', 'password' => 'tiger']]];
+        $this->assertSame('scott', A::getNested($array, 'db.login.username'));
+    }
+
+    /**
+     * Verify behavior when the given delimitedKey does not exist in the given array.
+     *
+     * @test
+     * @covers ::getNested
+     *
+     * @return void
+     */
+    public function getNestedPathNotFound()
+    {
+        $array = ['db' => ['host' => 'localhost', 'login' => [ 'username' => 'scott', 'password' => 'tiger']]];
+        $this->assertNull(A::getNested($array, 'db.notfound.username'));
+    }
 }

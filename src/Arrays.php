@@ -411,4 +411,49 @@ final class Arrays
             }
         }
     }
+
+    /**
+     * Traverses the given $array using the key path specified by $delimitedKey and returns the final value.
+     *
+     * Example:
+     * <br />
+     * <pre>
+     * use DominionEnterprises\Util\Arrays;
+     * $array = [
+     *     'db' => [
+     *         'host' => 'localhost',
+     *         'login' => [
+     *             'username' => 'scott',
+     *             'password' => 'tiger',
+     *         ],
+     *     ],
+     * ];
+     * echo Arrays::getNested($array, 'db.login.username');
+     * </pre>
+     * <br />
+     * Output:
+     * <pre>
+     * scott
+     * </pre>
+     *
+     * @param array  $array        The array to traverse.
+     * @param string $delimitedKey A string of keys to traverse into the array.
+     * @param string $delimiter    A string specifiying how the keys are delimited. The default is '.'.
+     *
+     * @return mixed The value at the inner most key or null if a key does not exist.
+     */
+    final public static function getNested(array $array, $delimitedKey, $delimiter = '.')
+    {
+        $pointer = $array;
+        foreach (explode($delimiter, $delimitedKey) as $key) {
+            if (is_array($pointer) && array_key_exists($key, $pointer)) {
+                $pointer = $pointer[$key];
+                continue;
+            }
+
+            return null;
+        }
+
+        return $pointer;
+    }
 }

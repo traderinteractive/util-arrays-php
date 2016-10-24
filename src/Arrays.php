@@ -528,4 +528,30 @@ final class Arrays
 
         return $input;
     }
+
+    /**
+     * Converts a multi-dimensional array into a single associative array whose keys are the concatinated keys
+     *
+     * @param array  $input     The array to flatten
+     * @param string $delimiter The separator for the concatinated keys.
+     *
+     * @return array The flattened array
+     */
+    final public static function flatten(array $input, $delimiter = '.')
+    {
+        $args = func_get_args();
+        $prefix = count($args) === 3 ? array_pop($args) : '';
+        $result = [];
+        foreach ($input as $key => $value) {
+            $newKey = $prefix . (empty($prefix) ? '' : $delimiter) . $key;
+            if (is_array($value)) {
+                $result = array_merge($result, self::flatten($value, $delimiter, $newKey));
+                continue;
+            }
+
+            $result[$newKey] = $value;
+        }
+
+        return $result;
+    }
 }

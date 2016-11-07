@@ -883,4 +883,62 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
             'lower underscore to upper camel' => [$lowerUnderscore, A::CASE_CAMEL_CAPS | A::CASE_UPPER, $upper],
         ];
     }
+
+    /**
+     * Verify basic behavior of flatten().
+     *
+     * @test
+     * @covers ::flatten
+     *
+     * @return void
+     */
+    public function flatten()
+    {
+        $array = [
+            'db' => [
+                'host' => 'localhost',
+                'login' => [
+                    'username' => 'scott',
+                    'password' => 'tiger'
+                ]
+            ]
+        ];
+
+        $expected = [
+            'db.host' => 'localhost',
+            'db.login.username' => 'scott',
+            'db.login.password' => 'tiger',
+        ];
+
+        $this->assertSame($expected, A::flatten($array));
+    }
+
+    /**
+     * Verify behavior of flatten() with custom delimiter.
+     *
+     * @test
+     * @covers ::flatten
+     *
+     * @return void
+     */
+    public function flattenWithCustomDelimiter()
+    {
+        $array = [
+            'db' => [
+                'host' => 'localhost',
+                'login' => [
+                    'username' => 'scott',
+                    'password' => 'tiger'
+                ]
+            ]
+        ];
+
+        $expected = [
+            'db/host' => 'localhost',
+            'db/login/username' => 'scott',
+            'db/login/password' => 'tiger',
+        ];
+
+        $this->assertSame($expected, A::flatten($array, '/'));
+    }
 }

@@ -554,4 +554,24 @@ final class Arrays
 
         return $result;
     }
+
+    /**
+     * Returns all elements in the given $input array which contain the specifed $targetKey index.
+     *
+     * @param array          $input     The multi-dimensional array to check.
+     * @param string|integer $targetKey The key to search for.
+     *
+     * @return array All elements of $input which contained $targetKey element with original keys preserved.
+     */
+    final public static function getAllWhereKeyExists(array $input, $targetKey)
+    {
+        $result = [];
+        foreach ($input as $key => $value) {
+            if (array_key_exists($targetKey, $value)) {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
+    }
 }

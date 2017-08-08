@@ -941,4 +941,46 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, A::flatten($array, '/'));
     }
+
+    /**
+     * @test
+     * @covers ::getAllWhereKeyExists
+     *
+     * @return void
+     */
+    public function getAllWhereKeyExists()
+    {
+        $input = [
+            [
+                'id' => 1,
+                'code' => 'foo',
+                'extra' => 'abc',
+            ],
+            [
+                'id' => 2,
+                'code' => 'bar',
+            ],
+            [
+                'id' => 3,
+                'code' => 'baz',
+                'extra' => 'xyz',
+            ],
+        ];
+
+        $this->assertSame(
+            [
+                0 => [
+                    'id' => 1,
+                    'code' => 'foo',
+                    'extra' => 'abc',
+                ],
+                2 => [
+                    'id' => 3,
+                    'code' => 'baz',
+                    'extra' => 'xyz',
+                ],
+            ],
+            A::getAllWhereKeyExists($input, 'extra')
+        );
+    }
 }

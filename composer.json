@@ -27,8 +27,8 @@
         "php": "^7.0"
     },
     "require-dev": {
+        "php-coveralls/php-coveralls": "^1.0",
         "phpunit/phpunit": "~5.0",
-        "satooshi/php-coveralls": "~0.6.1",
         "squizlabs/php_codesniffer": "~2.0"
     },
     "autoload": {

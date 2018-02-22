@@ -236,8 +236,7 @@ final class Arrays
         string $fieldName,
         array $destination = [],
         bool $overwrite = false
-    ) : array
-    {
+    ) : array {
         foreach ($items as $key => $item) {
             if (!array_key_exists($key, $destination)) {
                 $destination[$key] = [$fieldName => $item];
@@ -302,8 +301,7 @@ final class Arrays
         $keyIndex,
         $valueIndex,
         string $duplicateBehavior = 'takeLast'
-    ) : array
-    {
+    ) : array {
         if (!in_array($duplicateBehavior, ['takeFirst', 'takeLast', 'throw'])) {
             throw new \InvalidArgumentException("\$duplicateBehavior was not 'takeFirst', 'takeLast', or 'throw'");
         }

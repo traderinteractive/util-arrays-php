@@ -176,17 +176,6 @@ final class ArraysTest extends TestCase
      * @test
      * @covers ::project
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $strictKeyCheck was not a bool
-     */
-    public function projectStrictKeyNotBool()
-    {
-        A::project([], 'not under test', 1);
-    }
-
-    /**
-     * @test
-     * @covers ::project
-     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage a value in $input was not an array
      */
     public function projectInputValueNotArray()
@@ -320,19 +309,6 @@ final class ArraysTest extends TestCase
     }
 
     /**
-     * Verifies that embedInto requires string for fieldname
-     *
-     * @test
-     * @covers ::embedInto
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $fieldName was not a string
-     */
-    public function embedIntoNumericFieldName()
-    {
-        A::embedInto([], 5);
-    }
-
-    /**
      * Verifies that embedInto requires destination entries to be arrays.
      *
      * @test
@@ -375,17 +351,6 @@ final class ArraysTest extends TestCase
     public function embedIntoOverwrite()
     {
         $this->assertSame([['key' => true]], A::embedInto([true], 'key', [['key' => false]], true));
-    }
-
-    /**
-     * @test
-     * @covers ::embedInto
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $overwrite was not a bool
-     */
-    public function embedIntoOverwriteNotBool()
-    {
-        A::embedInto([], 'key', [], 1);
     }
 
     /**
@@ -653,19 +618,6 @@ final class ArraysTest extends TestCase
     }
 
     /**
-     * Verifiy partition() throws with non-integer $partitionCount.
-     *
-     * @test
-     * @covers ::partition
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $partitionCount must be a positive integer
-     */
-    public function partitionNonIntegerPartitionCount()
-    {
-        A::partition(['a', 'b', 'c'], 'not an int');
-    }
-
-    /**
      * Verifiy partition() preserves numeric keys.
      *
      * @test
@@ -691,19 +643,6 @@ final class ArraysTest extends TestCase
             [['a' => 0, 'b' => 1], ['c' => 2, 'd' => 3], ['e' => 4]],
             A::partition(['a' => 0, 'b' => 1, 'c' => 2, 'd' => 3, 'e' => 4], 3)
         );
-    }
-
-    /**
-     * Verifiy partition() throws with non-boolean $preserveKeys.
-     *
-     * @test
-     * @covers ::partition
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $preserveKeys must be a boolean value
-     */
-    public function partitionNonBoolPreserveKeys()
-    {
-        A::partition(['a', 'b', 'c'], 3, 'not a bool');
     }
 
     /**

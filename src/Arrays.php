@@ -122,7 +122,7 @@ final class Arrays
      *
      * @return bool true if $key was found and filled in $value, false if $key was not found and $value was set to null
      */
-    public static function tryGet(array $array, $key, &$value)
+    public static function tryGet(array $array, $key, &$value) : bool
     {
         if ((is_string($key) || is_int($key)) && array_key_exists($key, $array)) {
             $value = $array[$key];
@@ -154,16 +154,11 @@ final class Arrays
      *
      * @return array the projection
      *
-     * @throws \InvalidArgumentException if $strictKeyCheck was not a bool
      * @throws \InvalidArgumentException if a value in $input was not an array
      * @throws \InvalidArgumentException if a key was not in one of the $input arrays
      */
-    public static function project(array $input, $key, $strictKeyCheck = true)
+    public static function project(array $input, $key, bool $strictKeyCheck = true) : array
     {
-        if ($strictKeyCheck !== false && $strictKeyCheck !== true) {
-            throw new \InvalidArgumentException('$strictKeyCheck was not a bool');
-        }
-
         $projection = [];
 
         foreach ($input as $itemKey => $item) {
@@ -191,7 +186,7 @@ final class Arrays
      *
      * @throws \InvalidArgumentException if a value in $array was not an array
      */
-    public static function where(array $array, array $conditions)
+    public static function where(array $array, array $conditions) : array
     {
         $result = [];
         foreach ($array as $item) {
@@ -236,16 +231,13 @@ final class Arrays
      * @throws \InvalidArgumentException if a value in $destination was not an array
      * @throws \Exception if $fieldName key already exists in a $destination array
      */
-    public static function embedInto(array $items, $fieldName, array $destination = [], $overwrite = false)
+    public static function embedInto(
+        array $items,
+        string $fieldName,
+        array $destination = [],
+        bool $overwrite = false
+    ) : array
     {
-        if (!is_string($fieldName)) {
-            throw new \InvalidArgumentException('$fieldName was not a string');
-        }
-
-        if ($overwrite !== false && $overwrite !== true) {
-            throw new \InvalidArgumentException('$overwrite was not a bool');
-        }
-
         foreach ($items as $key => $item) {
             if (!array_key_exists($key, $destination)) {
                 $destination[$key] = [$fieldName => $item];
@@ -305,7 +297,12 @@ final class Arrays
      * @throws \UnexpectedValueException Thrown if a $keyIndex value is not a string or integer
      * @throws \Exception Thrown if $duplicatedBehavior is 'throw' and duplicate entries are found.
      */
-    public static function extract(array $input, $keyIndex, $valueIndex, $duplicateBehavior = 'takeLast')
+    public static function extract(
+        array $input,
+        $keyIndex,
+        $valueIndex,
+        string $duplicateBehavior = 'takeLast'
+    ) : array
     {
         if (!in_array($duplicateBehavior, ['takeFirst', 'takeLast', 'throw'])) {
             throw new \InvalidArgumentException("\$duplicateBehavior was not 'takeFirst', 'takeLast', or 'throw'");
@@ -386,14 +383,10 @@ final class Arrays
      * @throws \InvalidArgumentException Thrown if $partitionCount is not a positive integer.
      * @throws \InvalidArgumentException Thrown if $preserveKeys is not a boolean value.
      */
-    public static function partition(array $input, $partitionCount, $preserveKeys = false)
+    public static function partition(array $input, int $partitionCount, bool $preserveKeys = false) : array
     {
-        if (!is_int($partitionCount) || $partitionCount < 1) {
+        if ($partitionCount < 1) {
             throw new \InvalidArgumentException('$partitionCount must be a positive integer');
-        }
-
-        if ($preserveKeys !== false && $preserveKeys !== true) {
-            throw new \InvalidArgumentException('$preserveKeys must be a boolean value');
         }
 
         $inputLength = count($input);
@@ -471,7 +464,7 @@ final class Arrays
      *
      * @return mixed The value at the inner most key or null if a key does not exist.
      */
-    final public static function getNested(array $array, $delimitedKey, $delimiter = '.')
+    final public static function getNested(array $array, string $delimitedKey, string $delimiter = '.')
     {
         $pointer = $array;
         foreach (explode($delimiter, $delimitedKey) as $key) {
@@ -494,7 +487,7 @@ final class Arrays
      *
      * @return array Returns an array with its keys case changed.
      */
-    public static function changeKeyCase(array $input, $case = self::CASE_LOWER)
+    public static function changeKeyCase(array $input, int $case = self::CASE_LOWER) : array
     {
         if ($case & self::CASE_UNDERSCORE) {
             $copy = [];
@@ -537,7 +530,7 @@ final class Arrays
      *
      * @return array The flattened array
      */
-    final public static function flatten(array $input, $delimiter = '.')
+    final public static function flatten(array $input, string $delimiter = '.') : array
     {
         $args = func_get_args();
         $prefix = count($args) === 3 ? array_pop($args) : '';
@@ -563,7 +556,7 @@ final class Arrays
      *
      * @return array All elements of $input which contained $targetKey element with original keys preserved.
      */
-    final public static function getAllWhereKeyExists(array $input, $targetKey)
+    final public static function getAllWhereKeyExists(array $input, $targetKey) : array
     {
         $result = [];
         foreach ($input as $key => $value) {

@@ -1,9 +1,9 @@
 <?php
 /**
- * Defines the \DominionEnterprises\Util\Arrays class.
+ * Defines the \TraderInteractive\Util\Arrays class.
  */
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
 /**
  * Class of static array utility functions.
@@ -447,7 +447,7 @@ final class Arrays
      * Example:
      * <br />
      * <pre>
-     * use DominionEnterprises\Util\Arrays;
+     * use TraderInteractive\Util\Arrays;
      * $array = [
      *     'db' => [
      *         'host' => 'localhost',

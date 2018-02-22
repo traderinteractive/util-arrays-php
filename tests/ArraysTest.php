@@ -1,15 +1,15 @@
 <?php
 /**
- * Defines the \DominionEnterprises\Util\ArraysTest class
+ * Defines the \TraderInteractive\Util\ArraysTest class
  */
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
-use DominionEnterprises\Util\Arrays as A;
+use TraderInteractive\Util\Arrays as A;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Util\Arrays
+ * @coversDefaultClass \TraderInteractive\Util\Arrays
  */
 final class ArraysTest extends TestCase
 {

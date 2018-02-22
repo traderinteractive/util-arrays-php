@@ -6,11 +6,12 @@
 namespace DominionEnterprises\Util;
 
 use DominionEnterprises\Util\Arrays as A;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Util\Arrays
  */
-final class ArraysTest extends \PHPUnit_Framework_TestCase
+final class ArraysTest extends TestCase
 {
     /**
      * @test
@@ -409,7 +410,6 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::extract
-     * @uses \DominionEnterprises\Util\Arrays::get
      */
     public function extract()
     {
@@ -431,7 +431,6 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::extract
-     * @uses \DominionEnterprises\Util\Arrays::get
      */
     public function extractTakeFirst()
     {
@@ -453,7 +452,6 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::extract
-     * @uses \DominionEnterprises\Util\Arrays::get
      * @expectedException \Exception
      * @expectedExceptionMessage Duplicate entry for 'boo' found.
      */
@@ -488,7 +486,6 @@ final class ArraysTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      * @covers ::extract
-     * @uses \DominionEnterprises\Util\Arrays::get
      * @expectedException \UnexpectedValueException
      * @expectedExceptionMessage Value for $arrays[1][key] was not a string or integer
      */

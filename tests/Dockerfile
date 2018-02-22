@@ -1,3 +1,4 @@
 FROM nubs/phpunit
 
-CMD ["./build.php"]
+CMD ["./vendor/bin/phpunit"]
+CMD ["./vendor/bin/phpcs"]

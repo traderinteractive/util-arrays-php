@@ -475,26 +475,12 @@ final class Arrays
     public static function changeKeyCase(array $input, int $case = self::CASE_LOWER) : array
     {
         if ($case & self::CASE_UNDERSCORE) {
-            $copy = [];
-            foreach ($input as $key => $value) {
-                $copy[preg_replace("/([a-z])([A-Z0-9])/", '$1_$2', $key)] = $value;
-            }
-
-            $input = $copy;
+            $input = self::underscoreKeys($input);
         }
 
         if ($case & self::CASE_CAMEL_CAPS) {
-            $copy = [];
-            foreach ($input as $key => $value) {
-                $key = implode(' ', array_filter(preg_split('/[^a-z0-9]/i', $key)));
-                $key = lcfirst(str_replace(' ', '', ucwords(strtolower($key))));
-                $copy[$key] = $value;
-            }
-
-            $input = $copy;
+            $input = self::camelCaseKeys($input);
         }
-
-        unset($copy); //gc
 
         if ($case & self::CASE_UPPER) {
             $input = array_change_key_case($input, \CASE_UPPER);
@@ -551,6 +537,32 @@ final class Arrays
         }
 
         return $result;
+    }
+
+    private static function underscoreKeys(array $input) : array
+    {
+        $copy = [];
+        foreach ($input as $key => $value) {
+            $copy[preg_replace("/([a-z])([A-Z0-9])/", '$1_$2', $key)] = $value;
+        }
+
+        $input = $copy;
+        unset($copy); //garbage collection
+        return $input;
+    }
+
+    private static function camelCaseKeys(array $input) : array
+    {
+        $copy = [];
+        foreach ($input as $key => $value) {
+            $key = implode(' ', array_filter(preg_split('/[^a-z0-9]/i', $key)));
+            $key = lcfirst(str_replace(' ', '', ucwords(strtolower($key))));
+            $copy[$key] = $value;
+        }
+
+        $input = $copy;
+        unset($copy); //garbage collection
+        return $input;
     }
 
     private static function ensureValidKey(

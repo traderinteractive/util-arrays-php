@@ -79,15 +79,10 @@ final class Arrays
      */
     public static function copyIfKeysExist(array $source, array &$dest, array $keyMap)
     {
-        foreach ($keyMap as $destKey => $sourceKey) {
-            if (is_int($destKey)) {
-                $destKey = $sourceKey;
-            }
-
-            if (array_key_exists($sourceKey, $source)) {
-                $dest[$destKey] = $source[$sourceKey];
-            }
-        }
+        $callable = function (array $source, $key) {
+            return array_key_exists($key, $source);
+        };
+        self::copyValueIf($source, $dest, $keyMap, $callable);
     }
 
     /**
@@ -102,15 +97,10 @@ final class Arrays
      */
     public static function copyIfSet(array $source, array &$dest, array $keyMap)
     {
-        foreach ($keyMap as $destKey => $sourceKey) {
-            if (is_int($destKey)) {
-                $destKey = $sourceKey;
-            }
-
-            if (isset($source[$sourceKey])) {
-                $dest[$destKey] = $source[$sourceKey];
-            }
-        }
+        $callable = function (array $source, $key) {
+            return isset($source[$key]);
+        };
+        self::copyValueIf($source, $dest, $keyMap, $callable);
     }
 
     /**
@@ -584,6 +574,19 @@ final class Arrays
         if (!is_array($value)) {
             $reflectionClass = new \ReflectionClass($exceptionClass);
             throw $reflectionClass->newInstanceArgs([$message]);
+        }
+    }
+
+    private static function copyValueIf(array $source, array &$dest, array $keyMap, callable $condition)
+    {
+        foreach ($keyMap as $destKey => $sourceKey) {
+            if (is_int($destKey)) {
+                $destKey = $sourceKey;
+            }
+
+            if ($condition($source, $sourceKey)) {
+                $dest[$destKey] = $source[$sourceKey];
+            }
         }
     }
 }

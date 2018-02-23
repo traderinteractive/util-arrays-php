@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \TraderInteractive\Util\Arrays
+ * @covers ::<private>
  */
 final class ArraysTest extends TestCase
 {

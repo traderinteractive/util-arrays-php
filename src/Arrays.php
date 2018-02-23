@@ -162,9 +162,7 @@ final class Arrays
         $projection = [];
 
         foreach ($input as $itemKey => $item) {
-            if (!is_array($item)) {
-                throw new \InvalidArgumentException('a value in $input was not an array');
-            }
+            self::ensureIsArray($item, 'a value in $input was not an array');
 
             if (array_key_exists($key, $item)) {
                 $projection[$itemKey] = $item[$key];
@@ -190,9 +188,7 @@ final class Arrays
     {
         $result = [];
         foreach ($array as $item) {
-            if (!is_array($item)) {
-                throw new \InvalidArgumentException('a value in $array was not an array');
-            }
+            self::ensureIsArray($item, 'a value in $array was not an array');
 
             foreach ($conditions as $key => $value) {
                 if (!array_key_exists($key, $item) || $item[$key] !== $value) {
@@ -243,9 +239,7 @@ final class Arrays
                 continue;
             }
 
-            if (!is_array($destination[$key])) {
-                throw new \InvalidArgumentException('a value in $destination was not an array');
-            }
+            self::ensureIsArray($destination[$key], 'a value in $destination was not an array');
 
             if (!$overwrite && array_key_exists($fieldName, $destination[$key])) {
                 throw new \Exception('$fieldName key already exists in a $destination array');
@@ -311,9 +305,7 @@ final class Arrays
 
         $result = [];
         foreach ($input as $index => $array) {
-            if (!is_array($array)) {
-                throw new \InvalidArgumentException('$arrays was not a multi-dimensional array');
-            }
+            self::ensureIsArray($array, '$arrays was not a multi-dimensional array');
 
             $key = self::get($array, $keyIndex);
             self::ensureValidKey(
@@ -561,9 +553,23 @@ final class Arrays
         return $result;
     }
 
-    private static function ensureValidKey($key, string $message, string $exceptionClass = '\\InvalidArgumentException')
-    {
+    private static function ensureValidKey(
+        $key,
+        string $message,
+        string $exceptionClass = '\\InvalidArgumentException'
+    ) {
         if (!is_string($key) && !is_int($key)) {
+            $reflectionClass = new \ReflectionClass($exceptionClass);
+            throw $reflectionClass->newInstanceArgs([$message]);
+        }
+    }
+
+    private static function ensureIsArray(
+        $value,
+        string $message,
+        string $exceptionClass = '\\InvalidArgumentException'
+    ) {
+        if (!is_array($value)) {
             $reflectionClass = new \ReflectionClass($exceptionClass);
             throw $reflectionClass->newInstanceArgs([$message]);
         }

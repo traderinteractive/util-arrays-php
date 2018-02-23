@@ -306,13 +306,8 @@ final class Arrays
             throw new \InvalidArgumentException("\$duplicateBehavior was not 'takeFirst', 'takeLast', or 'throw'");
         }
 
-        if (!is_string($keyIndex) && !is_int($keyIndex)) {
-            throw new \InvalidArgumentException('$keyIndex was not a string or integer');
-        }
-
-        if (!is_string($valueIndex) && !is_int($valueIndex)) {
-            throw new \InvalidArgumentException('$valueIndex was not a string or integer');
-        }
+        self::ensureValidKey($keyIndex, '$keyIndex was not a string or integer');
+        self::ensureValidKey($valueIndex, '$valueIndex was not a string or integer');
 
         $result = [];
         foreach ($input as $index => $array) {
@@ -321,11 +316,11 @@ final class Arrays
             }
 
             $key = self::get($array, $keyIndex);
-            if (!is_string($key) && !is_int($key)) {
-                throw new \UnexpectedValueException(
-                    "Value for \$arrays[{$index}][{$keyIndex}] was not a string or integer"
-                );
-            }
+            self::ensureValidKey(
+                $key,
+                "Value for \$arrays[{$index}][{$keyIndex}] was not a string or integer",
+                '\\UnexpectedValueException'
+            );
 
             $value = self::get($array, $valueIndex);
             if (!array_key_exists($key, $result)) {
@@ -564,5 +559,13 @@ final class Arrays
         }
 
         return $result;
+    }
+
+    private static function ensureValidKey($key, string $message, string $exceptionClass = '\\InvalidArgumentException')
+    {
+        if (!is_string($key) && !is_int($key)) {
+            $reflectionClass = new \ReflectionClass($exceptionClass);
+            throw $reflectionClass->newInstanceArgs([$message]);
+        }
     }
 }

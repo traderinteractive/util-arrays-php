@@ -1,9 +1,9 @@
 <?php
 /**
- * Defines the \DominionEnterprises\Util\Arrays class.
+ * Defines the \TraderInteractive\Util\Arrays class.
  */
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
 /**
  * Class of static array utility functions.
@@ -79,15 +79,10 @@ final class Arrays
      */
     public static function copyIfKeysExist(array $source, array &$dest, array $keyMap)
     {
-        foreach ($keyMap as $destKey => $sourceKey) {
-            if (is_int($destKey)) {
-                $destKey = $sourceKey;
-            }
-
-            if (array_key_exists($sourceKey, $source)) {
-                $dest[$destKey] = $source[$sourceKey];
-            }
-        }
+        $callable = function (array $source, $key) {
+            return array_key_exists($key, $source);
+        };
+        self::copyValueIf($source, $dest, $keyMap, $callable);
     }
 
     /**
@@ -102,15 +97,10 @@ final class Arrays
      */
     public static function copyIfSet(array $source, array &$dest, array $keyMap)
     {
-        foreach ($keyMap as $destKey => $sourceKey) {
-            if (is_int($destKey)) {
-                $destKey = $sourceKey;
-            }
-
-            if (isset($source[$sourceKey])) {
-                $dest[$destKey] = $source[$sourceKey];
-            }
-        }
+        $callable = function (array $source, $key) {
+            return isset($source[$key]);
+        };
+        self::copyValueIf($source, $dest, $keyMap, $callable);
     }
 
     /**
@@ -122,7 +112,7 @@ final class Arrays
      *
      * @return bool true if $key was found and filled in $value, false if $key was not found and $value was set to null
      */
-    public static function tryGet(array $array, $key, &$value)
+    public static function tryGet(array $array, $key, &$value) : bool
     {
         if ((is_string($key) || is_int($key)) && array_key_exists($key, $array)) {
             $value = $array[$key];
@@ -154,22 +144,15 @@ final class Arrays
      *
      * @return array the projection
      *
-     * @throws \InvalidArgumentException if $strictKeyCheck was not a bool
      * @throws \InvalidArgumentException if a value in $input was not an array
      * @throws \InvalidArgumentException if a key was not in one of the $input arrays
      */
-    public static function project(array $input, $key, $strictKeyCheck = true)
+    public static function project(array $input, $key, bool $strictKeyCheck = true) : array
     {
-        if ($strictKeyCheck !== false && $strictKeyCheck !== true) {
-            throw new \InvalidArgumentException('$strictKeyCheck was not a bool');
-        }
-
         $projection = [];
 
         foreach ($input as $itemKey => $item) {
-            if (!is_array($item)) {
-                throw new \InvalidArgumentException('a value in $input was not an array');
-            }
+            self::ensureIsArray($item, 'a value in $input was not an array');
 
             if (array_key_exists($key, $item)) {
                 $projection[$itemKey] = $item[$key];
@@ -191,13 +174,11 @@ final class Arrays
      *
      * @throws \InvalidArgumentException if a value in $array was not an array
      */
-    public static function where(array $array, array $conditions)
+    public static function where(array $array, array $conditions) : array
     {
         $result = [];
         foreach ($array as $item) {
-            if (!is_array($item)) {
-                throw new \InvalidArgumentException('a value in $array was not an array');
-            }
+            self::ensureIsArray($item, 'a value in $array was not an array');
 
             foreach ($conditions as $key => $value) {
                 if (!array_key_exists($key, $item) || $item[$key] !== $value) {
@@ -236,25 +217,19 @@ final class Arrays
      * @throws \InvalidArgumentException if a value in $destination was not an array
      * @throws \Exception if $fieldName key already exists in a $destination array
      */
-    public static function embedInto(array $items, $fieldName, array $destination = [], $overwrite = false)
-    {
-        if (!is_string($fieldName)) {
-            throw new \InvalidArgumentException('$fieldName was not a string');
-        }
-
-        if ($overwrite !== false && $overwrite !== true) {
-            throw new \InvalidArgumentException('$overwrite was not a bool');
-        }
-
+    public static function embedInto(
+        array $items,
+        string $fieldName,
+        array $destination = [],
+        bool $overwrite = false
+    ) : array {
         foreach ($items as $key => $item) {
             if (!array_key_exists($key, $destination)) {
                 $destination[$key] = [$fieldName => $item];
                 continue;
             }
 
-            if (!is_array($destination[$key])) {
-                throw new \InvalidArgumentException('a value in $destination was not an array');
-            }
+            self::ensureIsArray($destination[$key], 'a value in $destination was not an array');
 
             if (!$overwrite && array_key_exists($fieldName, $destination[$key])) {
                 throw new \Exception('$fieldName key already exists in a $destination array');
@@ -305,32 +280,29 @@ final class Arrays
      * @throws \UnexpectedValueException Thrown if a $keyIndex value is not a string or integer
      * @throws \Exception Thrown if $duplicatedBehavior is 'throw' and duplicate entries are found.
      */
-    public static function extract(array $input, $keyIndex, $valueIndex, $duplicateBehavior = 'takeLast')
-    {
+    public static function extract(
+        array $input,
+        $keyIndex,
+        $valueIndex,
+        string $duplicateBehavior = 'takeLast'
+    ) : array {
         if (!in_array($duplicateBehavior, ['takeFirst', 'takeLast', 'throw'])) {
             throw new \InvalidArgumentException("\$duplicateBehavior was not 'takeFirst', 'takeLast', or 'throw'");
         }
 
-        if (!is_string($keyIndex) && !is_int($keyIndex)) {
-            throw new \InvalidArgumentException('$keyIndex was not a string or integer');
-        }
-
-        if (!is_string($valueIndex) && !is_int($valueIndex)) {
-            throw new \InvalidArgumentException('$valueIndex was not a string or integer');
-        }
+        self::ensureValidKey($keyIndex, '$keyIndex was not a string or integer');
+        self::ensureValidKey($valueIndex, '$valueIndex was not a string or integer');
 
         $result = [];
         foreach ($input as $index => $array) {
-            if (!is_array($array)) {
-                throw new \InvalidArgumentException('$arrays was not a multi-dimensional array');
-            }
+            self::ensureIsArray($array, '$arrays was not a multi-dimensional array');
 
             $key = self::get($array, $keyIndex);
-            if (!is_string($key) && !is_int($key)) {
-                throw new \UnexpectedValueException(
-                    "Value for \$arrays[{$index}][{$keyIndex}] was not a string or integer"
-                );
-            }
+            self::ensureValidKey(
+                $key,
+                "Value for \$arrays[{$index}][{$keyIndex}] was not a string or integer",
+                '\\UnexpectedValueException'
+            );
 
             $value = self::get($array, $valueIndex);
             if (!array_key_exists($key, $result)) {
@@ -386,14 +358,10 @@ final class Arrays
      * @throws \InvalidArgumentException Thrown if $partitionCount is not a positive integer.
      * @throws \InvalidArgumentException Thrown if $preserveKeys is not a boolean value.
      */
-    public static function partition(array $input, $partitionCount, $preserveKeys = false)
+    public static function partition(array $input, int $partitionCount, bool $preserveKeys = false) : array
     {
-        if (!is_int($partitionCount) || $partitionCount < 1) {
+        if ($partitionCount < 1) {
             throw new \InvalidArgumentException('$partitionCount must be a positive integer');
-        }
-
-        if ($preserveKeys !== false && $preserveKeys !== true) {
-            throw new \InvalidArgumentException('$preserveKeys must be a boolean value');
         }
 
         $inputLength = count($input);
@@ -447,7 +415,7 @@ final class Arrays
      * Example:
      * <br />
      * <pre>
-     * use DominionEnterprises\Util\Arrays;
+     * use TraderInteractive\Util\Arrays;
      * $array = [
      *     'db' => [
      *         'host' => 'localhost',
@@ -471,7 +439,7 @@ final class Arrays
      *
      * @return mixed The value at the inner most key or null if a key does not exist.
      */
-    final public static function getNested(array $array, $delimitedKey, $delimiter = '.')
+    final public static function getNested(array $array, string $delimitedKey, string $delimiter = '.')
     {
         $pointer = $array;
         foreach (explode($delimiter, $delimitedKey) as $key) {
@@ -494,29 +462,15 @@ final class Arrays
      *
      * @return array Returns an array with its keys case changed.
      */
-    public static function changeKeyCase(array $input, $case = self::CASE_LOWER)
+    public static function changeKeyCase(array $input, int $case = self::CASE_LOWER) : array
     {
         if ($case & self::CASE_UNDERSCORE) {
-            $copy = [];
-            foreach ($input as $key => $value) {
-                $copy[preg_replace("/([a-z])([A-Z0-9])/", '$1_$2', $key)] = $value;
-            }
-
-            $input = $copy;
+            $input = self::underscoreKeys($input);
         }
 
         if ($case & self::CASE_CAMEL_CAPS) {
-            $copy = [];
-            foreach ($input as $key => $value) {
-                $key = implode(' ', array_filter(preg_split('/[^a-z0-9]/i', $key)));
-                $key = lcfirst(str_replace(' ', '', ucwords(strtolower($key))));
-                $copy[$key] = $value;
-            }
-
-            $input = $copy;
+            $input = self::camelCaseKeys($input);
         }
-
-        unset($copy); //gc
 
         if ($case & self::CASE_UPPER) {
             $input = array_change_key_case($input, \CASE_UPPER);
@@ -537,7 +491,7 @@ final class Arrays
      *
      * @return array The flattened array
      */
-    final public static function flatten(array $input, $delimiter = '.')
+    final public static function flatten(array $input, string $delimiter = '.') : array
     {
         $args = func_get_args();
         $prefix = count($args) === 3 ? array_pop($args) : '';
@@ -563,7 +517,7 @@ final class Arrays
      *
      * @return array All elements of $input which contained $targetKey element with original keys preserved.
      */
-    final public static function getAllWhereKeyExists(array $input, $targetKey)
+    final public static function getAllWhereKeyExists(array $input, $targetKey) : array
     {
         $result = [];
         foreach ($input as $key => $value) {
@@ -573,5 +527,66 @@ final class Arrays
         }
 
         return $result;
+    }
+
+    private static function underscoreKeys(array $input) : array
+    {
+        $copy = [];
+        foreach ($input as $key => $value) {
+            $copy[preg_replace("/([a-z])([A-Z0-9])/", '$1_$2', $key)] = $value;
+        }
+
+        $input = $copy;
+        unset($copy); //garbage collection
+        return $input;
+    }
+
+    private static function camelCaseKeys(array $input) : array
+    {
+        $copy = [];
+        foreach ($input as $key => $value) {
+            $key = implode(' ', array_filter(preg_split('/[^a-z0-9]/i', $key)));
+            $key = lcfirst(str_replace(' ', '', ucwords(strtolower($key))));
+            $copy[$key] = $value;
+        }
+
+        $input = $copy;
+        unset($copy); //garbage collection
+        return $input;
+    }
+
+    private static function ensureValidKey(
+        $key,
+        string $message,
+        string $exceptionClass = '\\InvalidArgumentException'
+    ) {
+        if (!is_string($key) && !is_int($key)) {
+            $reflectionClass = new \ReflectionClass($exceptionClass);
+            throw $reflectionClass->newInstanceArgs([$message]);
+        }
+    }
+
+    private static function ensureIsArray(
+        $value,
+        string $message,
+        string $exceptionClass = '\\InvalidArgumentException'
+    ) {
+        if (!is_array($value)) {
+            $reflectionClass = new \ReflectionClass($exceptionClass);
+            throw $reflectionClass->newInstanceArgs([$message]);
+        }
+    }
+
+    private static function copyValueIf(array $source, array &$dest, array $keyMap, callable $condition)
+    {
+        foreach ($keyMap as $destKey => $sourceKey) {
+            if (is_int($destKey)) {
+                $destKey = $sourceKey;
+            }
+
+            if ($condition($source, $sourceKey)) {
+                $dest[$destKey] = $source[$sourceKey];
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "dominionenterprises/util-arrays",
+    "name": "traderinteractive/util-arrays",
     "description": "A collection of array utilities.",
     "keywords": ["utility", "array"],
     "authors": [
@@ -20,15 +20,18 @@
         }
     ],
     "license": "MIT",
+    "config": {
+        "sort-packages": true
+    },
     "require": {
-        "php": "~5.6 || ~7.0"
+        "php": "^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~5.0",
-        "satooshi/php-coveralls": "~0.6.1",
-        "squizlabs/php_codesniffer": "~2.0"
+        "php-coveralls/php-coveralls": "^1.0",
+        "phpunit/phpunit": "^6.0",
+        "squizlabs/php_codesniffer": "^3.2"
     },
     "autoload": {
-        "psr-4": { "DominionEnterprises\\Util\\": "src" }
+        "psr-4": { "TraderInteractive\\Util\\": "src" }
     }
 }

@@ -529,6 +529,25 @@ final class Arrays
         return $result;
     }
 
+    /**
+     * Returns TRUE if any of the given $keys exist in the $input array.
+     *
+     * @param array $array An array with keys to check.
+     * @param array $keys  The keys to check
+     *
+     * @return bool
+     */
+    final public static function anyKeysExist(array $array, array $keys) : bool
+    {
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $array)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static function underscoreKeys(array $input) : array
     {
         $copy = [];

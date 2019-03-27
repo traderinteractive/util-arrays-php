@@ -920,4 +920,25 @@ final class ArraysTest extends TestCase
             A::getAllWhereKeyExists($input, 'extra')
         );
     }
+
+    /**
+     * @test
+     * @covers ::anyKeysExist
+     * @dataProvider provideDataForAnyKeysExist
+     */
+    public function anyKeysExist(array $array, array $keys, bool $expectedResult)
+    {
+        $this->assertSame($expectedResult, A::anyKeysExist($array, $keys));
+    }
+
+    public function provideDataForAnyKeysExist() : array
+    {
+        return [
+            'single int key exists' => [['a', 'b', 'c'], [1], true],
+            'single string key exists' => [['a' => 1, 'b' => 2, 'c' => 3], ['c'], true],
+            'multiple string keys, one exists' =>  [['a' => 1, 'b' => 2, 'c' => 3], ['d', 'c'], true],
+            'multiple int keys, none exist' => [['a', 'b', 'c'], [3, 5], false],
+            'multiple string keys, none exist' => [['a' => 1, 'b' => 2, 'c' => 3], ['d', 'e'], false],
+        ];
+    }
 }

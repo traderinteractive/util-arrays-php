@@ -13,7 +13,6 @@ matrix:
   allow_failures:
      - php: nightly
 before_script:
-  - printf "\n" | pecl install imagick
   - composer update $PREFER_LOWEST
 script:
   - ./vendor/bin/phpunit --coverage-clover clover.xml

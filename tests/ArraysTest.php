@@ -266,6 +266,27 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::where
+     */
+    public function wherePreservesOriginalKeys()
+    {
+        $array = [
+            7 => ['key 1' => 'a', 'key 2' => 'b'],
+            8 => ['key 1' => 'c', 'key 2' => 'd'],
+            9 => ['key 1' => 'a', 'key 2' => 'c'],
+        ];
+
+        $expected = [
+            7 => ['key 1' => 'a', 'key 2' => 'b'],
+            9 => ['key 1' => 'a', 'key 2' => 'c'],
+        ];
+
+        $result = A::where($array, ['key 1' => 'a'], true);
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * @test
+     * @covers ::where
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage a value in $array was not an array
      */

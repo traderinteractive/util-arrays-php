@@ -169,15 +169,16 @@ final class Arrays
      *
      * @param array[] $array an array of arrays to be checked
      * @param array $conditions array of key/value pairs to filter by
+     * @param bool  $preserveKeys Flag to preserve the original keys of the array
      *
      * @return array the subset
      *
      * @throws \InvalidArgumentException if a value in $array was not an array
      */
-    public static function where(array $array, array $conditions) : array
+    public static function where(array $array, array $conditions, bool $preserveKeys = false) : array
     {
         $result = [];
-        foreach ($array as $item) {
+        foreach ($array as $index => $item) {
             self::ensureIsArray($item, 'a value in $array was not an array');
 
             foreach ($conditions as $key => $value) {
@@ -186,10 +187,10 @@ final class Arrays
                 }
             }
 
-            $result[] = $item;
+            $result[$index] = $item;
         }
 
-        return $result;
+        return $preserveKeys ? $result : array_values($result);
     }
 
     /**

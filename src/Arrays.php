@@ -6,6 +6,7 @@
 namespace TraderInteractive\Util;
 
 use InvalidArgumentException;
+use UnexpectedValueException;
 
 /**
  * Class of static array utility functions.
@@ -301,11 +302,8 @@ final class Arrays
             self::ensureIsArray($array, '$arrays was not a multi-dimensional array');
 
             $key = self::get($array, $keyIndex);
-            self::ensureValidKey(
-                $key,
-                "Value for \$arrays[{$index}][{$keyIndex}] was not a string or integer",
-                '\\UnexpectedValueException'
-            );
+            $message = "Value for \$arrays[{$index}][{$keyIndex}] was not a string or integer";
+            self::ensureValidKey($key, $message, UnexpectedValueException::class);
 
             $value = self::get($array, $valueIndex);
             if (!array_key_exists($key, $result)) {

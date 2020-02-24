@@ -5,6 +5,7 @@
 
 namespace TraderInteractive\Util;
 
+use InvalidArgumentException;
 use TraderInteractive\Util\Arrays as A;
 use PHPUnit\Framework\TestCase;
 
@@ -961,5 +962,49 @@ final class ArraysTest extends TestCase
             'multiple int keys, none exist' => [['a', 'b', 'c'], [3, 5], false],
             'multiple string keys, none exist' => [['a' => 1, 'b' => 2, 'c' => 3], ['d', 'e'], false],
         ];
+    }
+
+    /**
+     * @test
+     * @covers ::rename
+     */
+    public function rename()
+    {
+        $input = ['id' => 1, 'value' => ['a', 'b', 'c']];
+        Arrays::rename($input, 'value', 'values');
+        $this->assertSame(['id' => 1, 'values' => ['a', 'b', 'c']], $input);
+    }
+
+    /**
+     * @test
+     * @covers ::rename
+     * @expectedException InvalidArgumentException
+     */
+    public function renameOldKeyDoesNotExist()
+    {
+        $input = ['id' => 1, 'data' => ['a', 'b', 'c']];
+        Arrays::rename($input, 'value', 'values');
+    }
+
+    /**
+     * @test
+     * @covers ::rename
+     * @expectedException InvalidArgumentException
+     */
+    public function renameNewKeyExists()
+    {
+        $input = ['id' => 1, 'values' => ['a', 'b', 'c'], 'value' => [1, 2, 3]];
+        Arrays::rename($input, 'value', 'values');
+    }
+
+    /**
+     * @test
+     * @covers ::rename
+     */
+    public function renameNewKeyExistsWithOverwrite()
+    {
+        $input = ['id' => 1, 'values' => ['a', 'b', 'c'], 'value' => [1, 2, 3]];
+        Arrays::rename($input, 'value', 'values', true);
+        $this->assertSame(['id' => 1, 'values' => [1, 2, 3]], $input);
     }
 }

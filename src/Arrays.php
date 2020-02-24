@@ -5,6 +5,8 @@
 
 namespace TraderInteractive\Util;
 
+use InvalidArgumentException;
+
 /**
  * Class of static array utility functions.
  */
@@ -547,6 +549,31 @@ final class Arrays
         }
 
         return false;
+    }
+
+    /**
+     * Method to rename a key within array to a new key name.
+     *
+     * @param array  $input     The array containing the element to rename.
+     * @param string $oldKey    The old key value.
+     * @param string $newKey    The new key value.
+     * @param bool   $overwrite Flag to allow overwriting if the $newKey exists in the array
+     *
+     * @return void
+     */
+    final public static function rename(array &$input, string $oldKey, string $newKey, bool $overwrite = false)
+    {
+        if (!array_key_exists($oldKey, $input)) {
+            throw new InvalidArgumentException("{$oldKey} does not exist in the given array");
+        }
+
+        if (array_key_exists($newKey, $input) && !$overwrite) {
+            throw new InvalidArgumentException("{$newKey} found the given array");
+        }
+
+        $value = $input[$oldKey];
+        unset($input[$oldKey]);
+        $input[$newKey] = $value;
     }
 
     private static function underscoreKeys(array $input) : array

@@ -1007,4 +1007,23 @@ final class ArraysTest extends TestCase
         Arrays::rename($input, 'value', 'values', true);
         $this->assertSame(['id' => 1, 'values' => [1, 2, 3]], $input);
     }
+
+    /**
+     * @test
+     * @covers ::expand
+     */
+    public function expandArray()
+    {
+        $values = ['a', 'b', 'c'];
+        $key = 'id';
+        $result = Arrays::expand($values, $key);
+        $this->assertSame(
+            [
+                ['id' => 'a'],
+                ['id' => 'b'],
+                ['id' => 'c'],
+            ],
+            $result
+        );
+    }
 }

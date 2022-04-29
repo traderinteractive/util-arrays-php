@@ -574,6 +574,22 @@ final class Arrays
         $input[$newKey] = $value;
     }
 
+    /**
+     * @param array  $values Flat array of values.
+     * @param string $key    The key for which each value will be assigned in the resulting nested array.
+     *
+     * @return array
+     */
+    public static function expand(array $values, string $key) : array
+    {
+        $result = [];
+        foreach ($values as $value) {
+            $result[] = [$key => $value];
+        }
+
+        return $result;
+    }
+
     private static function underscoreKeys(array $input) : array
     {
         $copy = [];

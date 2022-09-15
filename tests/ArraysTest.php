@@ -155,10 +155,10 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::project
-     * @expectedException \InvalidArgumentException
      */
     public function projectStrictKeyFail()
     {
+        $this->expectException(\InvalidArgumentException::class);
         A::project([['key1' => 1, 'key2' => 2], ['key1' => 3]], 'key2');
     }
 
@@ -177,11 +177,11 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::project
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage a value in $input was not an array
      */
     public function projectInputValueNotArray()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('a value in $input was not an array');
         A::project([1], 'not under test');
     }
 
@@ -288,11 +288,11 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::where
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage a value in $array was not an array
      */
     public function whereInputValueNotArray()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('a value in $array was not an array');
         A::where([1], []);
     }
 
@@ -336,11 +336,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::embedInto
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage a value in $destination was not an array
      */
     public function embedIntoNonArrayDestinationItems()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('a value in $destination was not an array');
         A::embedInto(['one' => 0], 'result', ['one' => 0]);
     }
 
@@ -349,10 +349,10 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::embedInto
-     * @expectedException Exception
      */
     public function embedIntoExistingFieldName()
     {
+        $this->expectException(\Exception::class);
         A::embedInto(['new'], 'result', [['result' => 'old']]);
     }
 
@@ -440,11 +440,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::extract
-     * @expectedException \Exception
-     * @expectedExceptionMessage Duplicate entry for 'boo' found.
      */
     public function extractThrowOnDuplicate()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Duplicate entry for 'boo' found.");
         $input = [
             ['key' => 'foo', 'value' => 'bar', 'extra' => 'abc'],
             ['extra' => 123, 'key' => 'baz', 'value' => 'fez'],
@@ -461,11 +461,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::extract
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $arrays was not a multi-dimensional array
      */
     public function extractWithSingleDimensionalArray()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$arrays was not a multi-dimensional array');
         A::extract(['key' => 'foo', 'value' => 'bar', 'extra' => 'abc'], 'key', 'value');
     }
 
@@ -474,11 +474,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::extract
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionMessage Value for $arrays[1][key] was not a string or integer
      */
     public function extractWithInvalidKeyValue()
     {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Value for $arrays[1][key] was not a string or integer');
         $input = [
             ['key' => 'foo', 'value' => 'bar', 'extra' => 'abc'],
             ['extra' => 123, 'key' => [], 'value' => 'fez'],
@@ -492,11 +492,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::extract
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $keyIndex was not a string or integer
      */
     public function extractWithInvalidKeyIndex()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$keyIndex was not a string or integer');
         A::extract([], true, 'value');
     }
 
@@ -505,11 +505,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::extract
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $valueIndex was not a string or integer
      */
     public function extractWithInvalidValueIndex()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$valueIndex was not a string or integer');
         A::extract([], 'key', []);
     }
 
@@ -518,11 +518,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::extract
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $duplicateBehavior was not 'takeFirst', 'takeLast', or 'throw'
      */
     public function extractWithInvalidDuplicateBehavior()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("\$duplicateBehavior was not 'takeFirst', 'takeLast', or 'throw'");
         A::extract([], 'key', 'value', 'invalid');
     }
 
@@ -619,11 +619,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::partition
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $partitionCount must be a positive integer
      */
     public function partitionNegativePartitionCount()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$partitionCount must be a positive integer');
         A::partition(['a', 'b', 'c'], -1);
     }
 
@@ -632,11 +632,11 @@ final class ArraysTest extends TestCase
      *
      * @test
      * @covers ::partition
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $partitionCount must be a positive integer
      */
     public function partitionZeroPartitionCount()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$partitionCount must be a positive integer');
         A::partition(['a', 'b', 'c'], 0);
     }
 
@@ -978,10 +978,10 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::rename
-     * @expectedException InvalidArgumentException
      */
     public function renameOldKeyDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $input = ['id' => 1, 'data' => ['a', 'b', 'c']];
         Arrays::rename($input, 'value', 'values');
     }
@@ -989,10 +989,10 @@ final class ArraysTest extends TestCase
     /**
      * @test
      * @covers ::rename
-     * @expectedException InvalidArgumentException
      */
     public function renameNewKeyExists()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $input = ['id' => 1, 'values' => ['a', 'b', 'c'], 'value' => [1, 2, 3]];
         Arrays::rename($input, 'value', 'values');
     }
